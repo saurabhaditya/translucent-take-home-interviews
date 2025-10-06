@@ -15,7 +15,7 @@ def load_docs():
 # Initialize embedding model globally to avoid reloading
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
-def get_relevant_claims(question: str, df: pd.DataFrame, docs: list, top_k: int = 15):
+def get_relevant_claims_embeddings(question: str, df: pd.DataFrame, docs: list, top_k: int = 15):
     """Use semantic embeddings to find most relevant claims"""
     # Encode question and documents
     question_embedding = model.encode([question])
@@ -120,7 +120,7 @@ def synthesize_answer(question: str, relevant_claims: pd.DataFrame) -> str:
 
 def answer(question: str) -> str:
     docs, df = load_docs()
-    relevant_claims, similarities = get_relevant_claims(question, df, docs, top_k=15)
+    relevant_claims, similarities = get_relevant_claims_embeddings(question, df, docs, top_k=15)
     return synthesize_answer(question, relevant_claims)
 
 if __name__ == "__main__":
